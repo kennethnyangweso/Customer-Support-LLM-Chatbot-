@@ -1,7 +1,7 @@
 class LLMClient:
-    def chat_completion(self, messages):
+    def generate(self, prompt: str) -> str:
         """
-        Temporary mock implementation.
-        Replace with real LLM later.
+        Mock LLM response for testing.
+        It just echoes the prompt so you can see routing working.
         """
-        return "fallback"
+        return f"[MOCK RESPONSE]\n{prompt}"

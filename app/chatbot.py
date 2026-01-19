@@ -1,22 +1,32 @@
-from pathlib import Path
 from router.prompt_router import route_prompt
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+PROMPTS_DIR = BASE_DIR / "prompts"
 
 
-def load_prompt(filename):
-    path = Path("prompts") / filename
-    return path.read_text(encoding="utf-8")
+def load_prompt(filename: str) -> str:
+    return (PROMPTS_DIR / filename).read_text(encoding="utf-8")
 
 
-def generate_response(user_message, llm_client):
-    route = route_prompt(user_message, llm_client)
+def generate_response(user_message: str, llm_client) -> str:
+    route = route_prompt(user_message)
 
-    system_prompt = load_prompt("system_prompt.txt")
-    task_prompt = load_prompt(f"{route}_prompt.txt")
+    if route == "billing":
+        prompt = load_prompt("billing_prompt.txt")
+    elif route == "technical":
+        prompt = load_prompt("technical_prompt.txt")
+    elif route == "escalation":
+        prompt = load_prompt("escalation_prompt.txt")
+    else:
+        prompt = load_prompt("fallback_prompt.txt")
 
-    messages = [
-        {"role": "system", "content": system_prompt},
-        {"role": "system", "content": task_prompt},
-        {"role": "user", "content": user_message},
-    ]
+    final_prompt = f"""
+{prompt}
 
-    return llm_client.chat_completion(messages)
+User message:
+{user_message}
+"""
+
+    return llm_client.generate(final_prompt)
+
