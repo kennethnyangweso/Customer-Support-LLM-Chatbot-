@@ -27,17 +27,17 @@ def generate_response(user_message: str, llm_client) -> str:
     else:
         domain_prompt = FALLBACK_PROMPT
 
-    messages = [
-        {
-            "role": "system",
-            "content": f"{SYSTEM_PROMPT}\n\n{domain_prompt}"
-        },
-        {
-            "role": "user",
-            "content": user_message
-        }
-    ]
+    # ✅ Build ONE final string prompt
+    final_prompt = f"""
+{SYSTEM_PROMPT}
 
-    return llm_client.generate(messages)
+{domain_prompt}
 
+User message:
+{user_message}
 
+Assistant:
+""".strip()
+
+    # ✅ Send STRING to LLM client
+    return llm_client.generate(final_prompt)
