@@ -3,42 +3,42 @@ import torch
 
 class LLMClient1:
     def __init__(self):
-        model_name = "microsoft/Phi-3-mini-4k-instruct"
-
         self.tokenizer = AutoTokenizer.from_pretrained(
-            model_name,
+            "microsoft/Phi-3-mini-4k-instruct",
             trust_remote_code=True
         )
 
         self.model = AutoModelForCausalLM.from_pretrained(
-            model_name,
+            "microsoft/Phi-3-mini-4k-instruct",
             torch_dtype=torch.float32,
-            device_map="cpu",
-            trust_remote_code=True,
-            attn_implementation="eager",  # IMPORTANT
-            use_cache=False               # CRITICAL FIX
+            low_cpu_mem_usage=True,
+            device_map=None,
+            trust_remote_code=True
         )
 
-        self.model.eval()
-
-    def generate(self, prompt: str) -> str:
-        inputs = self.tokenizer(
-            prompt,
+    def generate(self, messages):
+        inputs = self.tokenizer.apply_chat_template(
+            messages,
+            add_generation_prompt=True,
+            tokenize=True,
             return_tensors="pt"
         )
 
-        with torch.no_grad():
-            outputs = self.model.generate(
-                **inputs,
-                max_new_tokens=150,
-                do_sample=True,
-                temperature=0.7,
-                top_p=0.9,
-                use_cache=False   # MUST match model
-            )
-
-        return self.tokenizer.decode(
-            outputs[0],
-            skip_special_tokens=True
+        outputs = self.model.generate(
+            inputs,
+            max_new_tokens=120,
+            do_sample=True,
+            temperature=0.7,
+            top_p=0.9
         )
 
+        return self.tokenizer.decode(
+            outputs[0][inputs.shape[-1]:],
+            skip_special_tokens=True
+        ).strip()
+
+
+        return self.tokenizer.decode(
+            outputs[0][inputs.shape[-1]:],
+            skip_special_tokens=True
+        ).strip()
