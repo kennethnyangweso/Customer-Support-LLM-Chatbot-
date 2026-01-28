@@ -1,27 +1,18 @@
-import sys
-from pathlib import Path
-
-# Fix imports
-ROOT_DIR = Path(__file__).resolve().parent.parent
-sys.path.append(str(ROOT_DIR))
-
 from app.chatbot import generate_response
-from app.llm_client import LLMClient
+from app.intent import detect_intent
 
-def run():
-    llm_client = LLMClient()
-    print("Customer Support Bot (type 'exit' to quit)")
+print("Customer Support Bot (type 'exit' to quit)")
 
-    while True:
-        user_input = input("User: ")
-        if user_input.lower() in {"exit", "quit"}:
-            print("Goodbye!")
-            break
+while True:
+    user_input = input("User: ")
 
-        response = generate_response(user_input, llm_client)
-        print("Bot:", response)
+    if user_input.lower() == "exit":
+        print("Bot: Thank you for contacting support. Have a great day!")
+        break
 
-if __name__ == "__main__":
-    run()
+    intent = detect_intent(user_input)
+    response = generate_response(user_input, intent)  # no LLM yet, uses human-like fallback
+
+    print(f"Bot: {response}")
 
 
