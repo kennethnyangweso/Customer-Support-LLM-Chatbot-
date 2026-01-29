@@ -1,10 +1,5 @@
-openai>=1.0.0
-python-dotenv
-pytest
-requests
-pytest-mock
-flask
-flask-testing
-flask-cors
-gunicorn
-pydantic
+torch>=2.1.0
+transformers>=4.35.0
+sentencepiece
+accelerate
+tokenizers
