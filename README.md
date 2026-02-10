@@ -87,27 +87,38 @@ The challenge is to build a chatbot capable of understanding customer messages a
 # Customer Support Bot (Mock Responses) Setup
 
 
-# 1️⃣ Clone the repository
-    git clone https://github.com/yourusername/Customer-Support-Bot.git
-    cd Customer-Support-Bot
+ 1️⃣ Clone the repository
+     
+     git clone https://github.com/yourusername/Customer-Support-Bot.git
+     cd Customer-Support-Bot
 
-# 2️⃣ Create a virtual environment (recommended)
-# Using Python's built-in venv
+ 2️⃣ Create a virtual environment (recommended)
+
+ Using Python's built-in venv
+    
      python -m venv cs_bot_env
 
-# Activate the virtual environment
-# On Windows:
+ Activate the virtual environment
+
+ On Windows:
+  
     cs_bot_env\Scripts\activate
-# On Mac/Linux:
+
+ On Mac/Linux:
+    
     source cs_bot_env/bin/activate
 
-# 3️⃣ Install required dependencies
-# (Ensure you have a requirements.txt in your repo)
+ 3️⃣ Install required dependencies
+
+ (Ensure you have a requirements.txt in your repo)
+    
     pip install --upgrade pip
     pip install -r requirements.txt
 
-# 4️⃣ Run the Customer Support Bot CLI
-# The bot uses human-like mock responses
+ 4️⃣ Run the Customer Support Bot CLI
+
+The bot uses human-like mock responses
+   
     python -m app.cli
 
 ##### What to expect:
